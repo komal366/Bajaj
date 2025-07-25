@@ -3,27 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Upload Documents</title>
+  <title>Upload Documents - SmartQuery</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-50 min-h-screen p-6">
-  <div class="max-w-2xl mx-auto">
-    <h1 class="text-3xl font-bold mb-6">📁 Upload Documents</h1>
-    <form class="space-y-6">
-      <div>
-        <label class="block text-lg font-medium mb-2">Select Document Type</label>
-        <select class="w-full p-3 border rounded-lg">
-          <option>Insurance Policy</option>
-          <option>Hospital Document</option>
-          <option>Previous Claim</option>
-        </select>
-      </div>
-      <div>
-        <label class="block text-lg font-medium mb-2">Upload File (.pdf, .docx, .eml)</label>
-        <input type="file" class="w-full border p-3 rounded-lg" accept=".pdf,.docx,.eml" />
-      </div>
-      <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded-xl hover:bg-green-700">Upload</button>
+<body class="bg-gray-50 text-gray-800">
+
+  
+
+  <!-- Upload Section -->
+  <section class="max-w-4xl mx-auto mt-12 bg-white p-8 rounded-xl shadow">
+    <h2 class="text-2xl font-bold mb-4 text-blue-700">Upload Your Documents</h2>
+    <form>
+      <label class="block mb-2 font-medium">Select Document</label>
+      <input type="file" class="mb-4 w-full p-3 border rounded">
+
+      <label class="block mb-2 font-medium">Document Description (Optional)</label>
+      <input type="text" placeholder="e.g. Insurance claim form" class="w-full border p-3 rounded mb-4">
+
+      <button class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700">Upload Document</button>
     </form>
-  </div>
+  </section>
+
 </body>
 </html>
