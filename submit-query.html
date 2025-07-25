@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Submit Query</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white min-h-screen p-6">
+  <div class="max-w-2xl mx-auto">
+    <h1 class="text-3xl font-bold mb-4">💬 Submit a Query</h1>
+    <form class="space-y-4">
+      <div>
+        <label class="block text-lg font-medium">Your Query</label>
+        <textarea rows="4" class="w-full p-3 border rounded-lg" placeholder="E.g., 46M, 3-month policy, recent surgery, request ₹15,000"></textarea>
+      </div>
+      <div>
+        <label class="block text-lg font-medium">Upload Relevant Document (Optional)</label>
+        <input type="file" class="w-full p-2 border rounded-lg" accept=".pdf,.docx,.eml" />
+      </div>
+      <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-xl hover:bg-blue-700">Submit</button>
+    </form>
+  </div>
+</body>
+</html>
