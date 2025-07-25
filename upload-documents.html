@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Upload Documents</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen p-6">
+  <div class="max-w-2xl mx-auto">
+    <h1 class="text-3xl font-bold mb-6">📁 Upload Documents</h1>
+    <form class="space-y-6">
+      <div>
+        <label class="block text-lg font-medium mb-2">Select Document Type</label>
+        <select class="w-full p-3 border rounded-lg">
+          <option>Insurance Policy</option>
+          <option>Hospital Document</option>
+          <option>Previous Claim</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-lg font-medium mb-2">Upload File (.pdf, .docx, .eml)</label>
+        <input type="file" class="w-full border p-3 rounded-lg" accept=".pdf,.docx,.eml" />
+      </div>
+      <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded-xl hover:bg-green-700">Upload</button>
+    </form>
+  </div>
+</body>
+</html>
