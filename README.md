@@ -1,105 +1,99 @@
-SmartQuery AI
-SmartQuery AI is an intelligent insurance query assistant that uses machine learning and natural language processing (NLP) to analyze insurance-related queries. It semantically searches uploaded policy documents or a predefined dataset and provides structured responses with decisions, justification, and matched policy clauses.
+🤖 SmartQuery AI
+SmartQuery AI is an AI-powered insurance query assistant that uses NLP + ML to intelligently analyze user questions, extract relevant information from insurance policy documents, and provide structured answers like claim approval, justification, and matched policy clauses.
 
-Features
-User authentication (Sign Up / Login)
+🚀 Features
+🔐 User Authentication (Sign Up / Login)
 
-Submit queries with or without uploading a document
+📤 Submit Queries with or without PDF document
 
-Real-time semantic matching using Sentence Transformers (DistilBERT)
+🤖 AI-Based Semantic Search using Sentence Transformers
 
-Outputs:
+✅ Real-time Decisions: Approved / Rejected
 
-Approval/Reject decision
+💰 Claim Amount Estimation
 
-Estimated claim amount
+📚 Matched Policy Clauses + Justification
 
-Matched policy clauses
+📜 Policy Name Detection
 
-Justification
+📂 Query & Document History with Download/View
 
-Query and document history view
-
-Responsive, modern UI built with TailwindCSS
-
-Setup
-bash
-Copy
-Edit
+📦 Setup
+bash```
 git clone https://github.com/your-repo.git
 cd your-repo
 pip install -r requirements.txt
 python app.py
-Visit: http://localhost:5000
+🔗 Open in browser: http://localhost:5000
 
-Folder Structure
-php
+🗂️ Folder Structure
+graphql
 Copy
 Edit
-your-repo/
-├── app.py                    # Main Flask backend
-├── dataset/                  # Contains default insurance policy PDFs
-├── static/                   # (Optional) CSS/JS files if extracted
-├── templates/ or HTML files  # login.html, submit-query.html, etc.
-├── uploads/                  # Stores uploaded policy documents
-├── requirements.txt
-Tech Stack
-Frontend:
-
+SmartQuery-AI/
+├── app.py                    # 🔁 Main Flask backend
+├── dataset/                  # 📄 Predefined PDF policies
+├── uploads/                  # ⬆️ Uploaded documents
+├── requirements.txt          # 🧪 Python dependencies
+├── login.html                # 🔐 Auth UI
+├── submit-query.html         # 🧾 Query form UI
+├── view-history.html         # 🕓 Query/document history UI
+└── index.html                # 🏠 Dashboard
+⚙️ Tech Stack
+🖥️ Frontend
 HTML, TailwindCSS
 
-Lucide Icons (optional)
+Lucide Icons
 
 Vanilla JavaScript
 
-Backend:
+🧠 Backend
+Python + Flask
 
-Python Flask
-
-MongoDB (via PyMongo)
+MongoDB (PyMongo)
 
 PyMuPDF (fitz) for PDF parsing
 
-SentenceTransformer (paraphrase-MiniLM-L6-v2) for semantic matching
+Sentence Transformers (MiniLM / DistilBERT)
 
-How It Works
-User submits a query and (optionally) uploads a PDF policy document.
+🧪 How It Works
+User submits a query and (optionally) uploads a PDF.
 
-The system extracts clauses from the document (or falls back to the dataset).
+System extracts clauses using regex + PDF parser.
 
-It performs semantic search using SentenceTransformer.
+Encodes both query and clauses using Sentence-BERT.
 
-Returns a structured response with:
+Calculates semantic similarity and selects top matches.
 
-Decision (Approved/Rejected)
+Returns:
 
-Estimated claim amount
+✅ Decision (Approved/Rejected)
 
-Justification
+💵 Estimated Amount
 
-Matched policy clauses
+🧾 Justification
 
-Policy name (if provided)
+📌 Matched Clauses
 
-History Page
-All submitted queries and uploaded documents are stored in MongoDB.
+📄 Policy Name (if provided)
 
-The "View History" page shows:
+📊 View History
+All queries & uploads saved in MongoDB.
 
-Query date
+UI table shows:
 
-Query text or uploaded file name
+📅 Date
 
-Decision or upload status
+💬 Query or 📄 Uploaded File
 
-Option to view justification or download document
+⚙️ Status (Approved / Rejected / Uploaded)
 
-Requirements
+🔍 View/Download Options
+
+🧰 Requirements
 Python 3.7+
 
-MongoDB running locally on mongodb://localhost:27017
-
-Install dependencies:
+MongoDB (local) on mongodb://localhost:27017
 
 bash
 Copy
