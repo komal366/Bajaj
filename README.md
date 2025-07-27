@@ -30,38 +30,38 @@ python app.py
 
 ### ⚙️ Tech Stack
 💻 Frontend
-HTML, TailwindCSS
-JavaScript + Lucide Icons
+- HTML, TailwindCSS
+- JavaScript + Lucide Icons
 
 ### 🔙 Backend
-Python (Flask)
-MongoDB (PyMongo)
-Sentence Transformers (MiniLM)
-PyMuPDF (fitz) for PDF parsing
+- Python (Flask)
+- MongoDB (PyMongo)
+- Sentence Transformers (MiniLM)
+- PyMuPDF (fitz) for PDF parsing
 
 ### 🧠 How It Works
-🧾 User submits a query and optionally uploads a policy document.
-📄 Clauses are extracted from PDF using regex-based chunking.
-🤖 Query and clauses are encoded using Sentence-BERT (MiniLM).
-🔍 Semantic similarity is computed between query and clauses.
+- 🧾 User submits a query and optionally uploads a policy document.
+- 📄 Clauses are extracted from PDF using regex-based chunking.
+- 🤖 Query and clauses are encoded using Sentence-BERT (MiniLM).
+- 🔍 Semantic similarity is computed between query and clauses.
 
 ### ✅ System returns:
-Decision (Approved/Rejected)
-Justification text
-Matched clauses
-Estimated amount
+- Decision (Approved/Rejected)
+- Justification text
+- Matched clauses
+- Estimated amount
 
 ### 📊 Query & Upload History
 All user actions (queries + uploads) are saved in MongoDB.
 You can view:
-🕓 Date of submission
-🔎 Query text or 📄 filename
-✅ Decision or status
-📥 Action (View justification or Download file)
+- 🕓 Date of submission
+- 🔎 Query text or 📄 filename
+- ✅ Decision or status
+- 📥 Action (View justification or Download file)
 
 ### 🧰 Requirements
-Python 3.7+
-MongoDB (running locally on localhost:27017)
+- Python 3.7+
+- MongoDB (running locally on localhost:27017)
 
 ```bash
 pip install -r requirements.txt
