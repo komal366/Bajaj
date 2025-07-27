@@ -28,30 +28,30 @@ python app.py
 📍 Open in browser: http://localhost:5000
 
 
-###⚙️ Tech Stack
+### ⚙️ Tech Stack
 💻 Frontend
 HTML, TailwindCSS
 JavaScript + Lucide Icons
 
-###🔙 Backend
+### 🔙 Backend
 Python (Flask)
 MongoDB (PyMongo)
 Sentence Transformers (MiniLM)
 PyMuPDF (fitz) for PDF parsing
 
-###🧠 How It Works
+### 🧠 How It Works
 🧾 User submits a query and optionally uploads a policy document.
 📄 Clauses are extracted from PDF using regex-based chunking.
 🤖 Query and clauses are encoded using Sentence-BERT (MiniLM).
 🔍 Semantic similarity is computed between query and clauses.
 
-###✅ System returns:
+### ✅ System returns:
 Decision (Approved/Rejected)
 Justification text
 Matched clauses
 Estimated amount
 
-###📊 Query & Upload History
+### 📊 Query & Upload History
 All user actions (queries + uploads) are saved in MongoDB.
 You can view:
 🕓 Date of submission
@@ -59,7 +59,7 @@ You can view:
 ✅ Decision or status
 📥 Action (View justification or Download file)
 
-###🧰 Requirements
+### 🧰 Requirements
 Python 3.7+
 MongoDB (running locally on localhost:27017)
 
