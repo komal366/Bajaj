@@ -1,69 +1,107 @@
-SmartQuery AI - Insurance Query Assistant
-SmartQuery AI is an intelligent web application that helps users understand their insurance policy coverage by asking natural language queries. The system extracts relevant clauses from insurance documents using a semantic similarity model and provides structured answers including decision, claim amount, justification, and matched clauses.
+SmartQuery AI
+SmartQuery AI is an intelligent insurance query assistant that uses machine learning and natural language processing (NLP) to analyze insurance-related queries. It semantically searches uploaded policy documents or a predefined dataset and provides structured responses with decisions, justification, and matched policy clauses.
 
 Features
-AI-powered semantic search over insurance documents
+User authentication (Sign Up / Login)
 
-Submit queries related to policies via text
+Submit queries with or without uploading a document
 
-Optional document upload for query-specific analysis
+Real-time semantic matching using Sentence Transformers (DistilBERT)
 
-Real-time decision support (Approved/Rejected)
+Outputs:
 
-Claim justification with matched policy clauses
+Approval/Reject decision
 
-Secure user authentication (Sign up / Login)
+Estimated claim amount
 
-Dashboard with personalized greeting and query submission
+Matched policy clauses
 
-View complete query history
+Justification
 
-Responsive UI with Tailwind CSS
+Query and document history view
 
-Technologies Used
-Frontend
-HTML, TailwindCSS, JavaScript
+Responsive, modern UI built with TailwindCSS
 
-Lucide Icons (Optional)
+Setup
+bash
+Copy
+Edit
+git clone https://github.com/your-repo.git
+cd your-repo
+pip install -r requirements.txt
+python app.py
+Visit: http://localhost:5000
 
-Responsive design for mobile and desktop
+Folder Structure
+php
+Copy
+Edit
+your-repo/
+├── app.py                    # Main Flask backend
+├── dataset/                  # Contains default insurance policy PDFs
+├── static/                   # (Optional) CSS/JS files if extracted
+├── templates/ or HTML files  # login.html, submit-query.html, etc.
+├── uploads/                  # Stores uploaded policy documents
+├── requirements.txt
+Tech Stack
+Frontend:
 
-Backend
-Python (Flask)
+HTML, TailwindCSS
 
-PyMuPDF for PDF parsing
+Lucide Icons (optional)
 
-SentenceTransformer with paraphrase-MiniLM-L6-v2 model
+Vanilla JavaScript
+
+Backend:
+
+Python Flask
 
 MongoDB (via PyMongo)
 
-JWT/localStorage for user session (basic)
+PyMuPDF (fitz) for PDF parsing
 
-AI/ML
-Sentence-BERT for semantic similarity
-
-Clause extraction using regex and section title patterns
+SentenceTransformer (paraphrase-MiniLM-L6-v2) for semantic matching
 
 How It Works
-User submits a query (optionally uploading a policy PDF).
+User submits a query and (optionally) uploads a PDF policy document.
 
-The system extracts clauses from the uploaded document or from a predefined dataset.
+The system extracts clauses from the document (or falls back to the dataset).
 
-The query is semantically compared to the clauses using Sentence-BERT.
+It performs semantic search using SentenceTransformer.
 
-The system identifies top relevant clauses and provides:
+Returns a structured response with:
 
-Approval decision
+Decision (Approved/Rejected)
 
-Claim amount
+Estimated claim amount
 
-Justification (based on clause content and score)
+Justification
 
-Matched clause(s)
+Matched policy clauses
 
-The query is stored and displayed in the user’s history.
+Policy name (if provided)
 
-Setup
-git clone https://github.com/your-repo.git
+History Page
+All submitted queries and uploaded documents are stored in MongoDB.
+
+The "View History" page shows:
+
+Query date
+
+Query text or uploaded file name
+
+Decision or upload status
+
+Option to view justification or download document
+
+Requirements
+Python 3.7+
+
+MongoDB running locally on mongodb://localhost:27017
+
+Install dependencies:
+
+bash
+Copy
+Edit
 pip install -r requirements.txt
-python app.py
