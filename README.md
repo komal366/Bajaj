@@ -1,101 +1,70 @@
-🤖 SmartQuery AI
-SmartQuery AI is an AI-powered insurance query assistant that uses NLP + ML to intelligently analyze user questions, extract relevant information from insurance policy documents, and provide structured answers like claim approval, justification, and matched policy clauses.
+# 🤖 SmartQuery AI
 
-🚀 Features
-🔐 User Authentication (Sign Up / Login)
+**SmartQuery AI** is an AI-powered insurance query assistant that leverages NLP and Machine Learning to analyze user-submitted queries and PDF documents. It provides intelligent answers such as claim decisions, justification, estimated amount, matched clauses, and policy names — all in real time.
 
-📤 Submit Queries with or without PDF document
+---
 
-🤖 AI-Based Semantic Search using Sentence Transformers
+## 🚀 Features
 
-✅ Real-time Decisions: Approved / Rejected
+- 🔐 User Login & Sign Up
+- 🧾 Query Submission with Optional PDF Upload
+- 🤖 AI-Powered Semantic Search from Policy Documents
+- ✅ Decision Output: Approved / Rejected
+- 💰 Estimated Claim Amount
+- 📚 Justification + Matched Policy Clauses
+- 🧠 Supports Custom Uploaded Documents
+- 📂 Query & Upload History with View/Download
 
-💰 Claim Amount Estimation
+---
 
-📚 Matched Policy Clauses + Justification
+## 📦 Setup
 
-📜 Policy Name Detection
-
-📂 Query & Document History with Download/View
-
-📦 Setup
-bash```
+```bash
 git clone https://github.com/your-repo.git
-cd your-repo
 pip install -r requirements.txt
 python app.py
-🔗 Open in browser: http://localhost:5000
 
-🗂️ Folder Structure
-graphql
-Copy
-Edit
-SmartQuery-AI/
-├── app.py                    # 🔁 Main Flask backend
-├── dataset/                  # 📄 Predefined PDF policies
-├── uploads/                  # ⬆️ Uploaded documents
-├── requirements.txt          # 🧪 Python dependencies
-├── login.html                # 🔐 Auth UI
-├── submit-query.html         # 🧾 Query form UI
-├── view-history.html         # 🕓 Query/document history UI
-└── index.html                # 🏠 Dashboard
+📍 Open in browser: http://localhost:5000
+
+
 ⚙️ Tech Stack
-🖥️ Frontend
+💻 Frontend
 HTML, TailwindCSS
 
-Lucide Icons
+JavaScript + Lucide Icons
 
-Vanilla JavaScript
-
-🧠 Backend
-Python + Flask
+🔙 Backend
+Python (Flask)
 
 MongoDB (PyMongo)
 
+Sentence Transformers (MiniLM)
+
 PyMuPDF (fitz) for PDF parsing
 
-Sentence Transformers (MiniLM / DistilBERT)
+🧠 How It Works
+🧾 User submits a query and optionally uploads a policy document.
+📄 Clauses are extracted from PDF using regex-based chunking.
+🤖 Query and clauses are encoded using Sentence-BERT (MiniLM).
+🔍 Semantic similarity is computed between query and clauses.
 
-🧪 How It Works
-User submits a query and (optionally) uploads a PDF.
+✅ System returns:
+Decision (Approved/Rejected)
+Justification text
+Matched clauses
+Estimated amount
 
-System extracts clauses using regex + PDF parser.
-
-Encodes both query and clauses using Sentence-BERT.
-
-Calculates semantic similarity and selects top matches.
-
-Returns:
-
-✅ Decision (Approved/Rejected)
-
-💵 Estimated Amount
-
-🧾 Justification
-
-📌 Matched Clauses
-
-📄 Policy Name (if provided)
-
-📊 View History
-All queries & uploads saved in MongoDB.
-
-UI table shows:
-
-📅 Date
-
-💬 Query or 📄 Uploaded File
-
-⚙️ Status (Approved / Rejected / Uploaded)
-
-🔍 View/Download Options
+📊 Query & Upload History
+All user actions (queries + uploads) are saved in MongoDB.
+You can view:
+🕓 Date of submission
+🔎 Query text or 📄 filename
+✅ Decision or status
+📥 Action (View justification or Download file)
 
 🧰 Requirements
 Python 3.7+
+MongoDB (running locally on localhost:27017)
 
-MongoDB (local) on mongodb://localhost:27017
-
-bash
-Copy
-Edit
+```bash
 pip install -r requirements.txt
