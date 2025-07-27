@@ -7,10 +7,8 @@ import datetime
 import fitz  # PyMuPDF
 import json
 import re
-import google.generativeai as genai
-
-# ✅ Configure Gemini API Key
-genai.configure(api_key="your key")  # Replace this with your key
+from sentence_transformers import SentenceTransformer, util
+import torch
 
 app = Flask(__name__)
 CORS(app)
@@ -21,12 +19,11 @@ db = client_mongo["user_db"]
 users_collection = db["users"]
 queries_collection = db["queries"]
 
-# ✅ Dataset folder path
+# ✅ Paths
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATASET_FOLDER = os.path.join(BASE_DIR, "dataset")
-dataset_text = ""
 
-# ✅ Load dataset
+# ✅ Load dataset text
 def load_dataset_text():
     combined = ""
     for filename in os.listdir(DATASET_FOLDER):
@@ -41,6 +38,27 @@ def load_dataset_text():
     return combined
 
 dataset_text = load_dataset_text()
+
+def extract_clauses(text):
+    # Split on common section titles or headings
+    pattern = re.compile(r'((?:[A-Z][a-z]+ )?(?:Cover|Covers|We will not cover|We will cover|expenses|Add On Wordings)[^\n]*)\n+(.*?)(?=\n[A-Z].*?Cover|\nWe will not cover|\nAdd On Wordings|$)', re.DOTALL)
+    matches = pattern.findall(text)
+
+    clauses = []
+    for title, body in matches:
+        cleaned_title = title.strip().replace('\n', ' ')
+        cleaned_body = body.strip().replace('\n', ' ')
+        clause = f"{cleaned_title}: {cleaned_body}"
+        clauses.append(clause)
+
+    print(f"✅ Extracted {len(clauses)} full clauses.")
+    return clauses
+
+
+policy_clauses = extract_clauses(dataset_text)
+
+# ✅ Load model
+model = SentenceTransformer("paraphrase-MiniLM-L6-v2")
 
 # ✅ ROUTES
 @app.route("/")
@@ -63,7 +81,7 @@ def view_history():
 def login_page():
     return send_file(os.path.join(BASE_DIR, "login.html"))
 
-# ✅ Auth
+# ✅ AUTH
 @app.route("/signup", methods=["POST"])
 def signup():
     data = request.json
@@ -101,67 +119,66 @@ def login():
 
     return jsonify({"message": "Invalid email or password"}), 401
 
-# ✅ Submit Query
+# ✅ SUBMIT QUERY
 @app.route("/submit-query", methods=["POST"])
 def handle_query():
     data = request.json
     name = data.get("name")
     query = data.get("query")
 
-    prompt = f"""
-You are an insurance assistant AI. Use the following policy document to evaluate the user's query.
-
---- Policy Document Start ---
-{dataset_text[:10000]}
---- Policy Document End ---
-
-User Query:
-"{query}"
-
-Respond in ONLY valid JSON in this format:
-
-{{
-  "decision": "Approved/Rejected/Partially Approved",
-  "amount": "₹amount or 'N/A'",
-  "justification": "Explain clearly using relevant clauses",
-  "matched_clauses": [
-    "Section 2.1: ...",
-    "Section 4.3: ..."
-  ]
-}}
-"""
-
     try:
-        # ✅ Gemini LLM Call
-        model = genai.GenerativeModel("gemini-pro")
-        chat = model.start_chat()
-        response = chat.send_message(prompt)
-        content = response.text
+        if not policy_clauses:
+            raise ValueError("No policy clauses available.")
 
-        print("🔍 Gemini Response:\n", content)
+        # Embeddings
+        query_embedding = model.encode(query, convert_to_tensor=True)
+        clause_embeddings = model.encode(policy_clauses, convert_to_tensor=True)
 
-        # ✅ Extract JSON
-        match = re.search(r"\{.*\}", content, re.DOTALL)
-        if not match:
-            raise ValueError("No valid JSON found")
+        # Similarity calculation
+        similarities = util.pytorch_cos_sim(query_embedding, clause_embeddings)[0]
+        top_k = 3
+        top_indices = torch.topk(similarities, k=top_k).indices
 
-        result = json.loads(match.group(0))
+        # Extract top matched clauses and remove duplicates
+        seen = set()
+        matched_clauses = []
+        for i in top_indices:
+            clause = policy_clauses[i]
+            cleaned = clause.strip()
+            if cleaned not in seen:
+                seen.add(cleaned)
+                matched_clauses.append(cleaned)
+        matched_clauses = matched_clauses[:top_k]
 
-        # ✅ Save to DB
+        # Decision logic
+        max_sim = float(similarities[top_indices[0]])
+        decision = "Approved" if max_sim > 0.5 else "Rejected"
+        amount = "₹25,000" if decision == "Approved" else "N/A"
+
+        # Extract first clause snippet for justification
+        first_clause_summary = matched_clauses[0][:100].strip().replace('\n', ' ')
+        justification = f"Covered under clause: \"{first_clause_summary}...\" (similarity: {max_sim:.2f})"
+
+        # Save to DB
         queries_collection.insert_one({
             "name": name,
             "query": query,
-            "decision": result.get("decision", "Unknown"),
-            "amount": result.get("amount", "N/A"),
-            "justification": result.get("justification", ""),
-            "matched_clauses": result.get("matched_clauses", []),
+            "decision": decision,
+            "amount": amount,
+            "justification": justification,
+            "matched_clauses": matched_clauses,
             "date": datetime.datetime.now()
         })
 
-        return jsonify(result)
+        return jsonify({
+            "decision": decision,
+            "amount": amount,
+            "justification": justification,
+            "matched_clauses": matched_clauses
+        })
 
     except Exception as e:
-        print("❌ Gemini Error:", e)
+        print("❌ Model Error:", e)
         return jsonify({
             "decision": "Unknown",
             "amount": "N/A",
@@ -169,12 +186,13 @@ Respond in ONLY valid JSON in this format:
             "matched_clauses": []
         }), 500
 
-# ✅ Query History
+
+# ✅ QUERY HISTORY
 @app.route("/query-history", methods=["GET"])
 def get_history():
     queries = list(queries_collection.find({}, {"_id": 0}))
     return jsonify({"queries": queries})
 
-# ✅ Run App
+# ✅ Run app
 if __name__ == "__main__":
     app.run(debug=True)

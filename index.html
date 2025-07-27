@@ -8,70 +8,59 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <script>
     function toggleMenu() {
-      const menu = document.getElementById('mobile-menu');
-      menu.classList.toggle('hidden');
+      document.getElementById('mobile-menu').classList.toggle('hidden');
     }
 
-    // Toggle dropdown visibility
-  function toggleDropdown() {
-    document.getElementById('profile-dropdown').classList.toggle('hidden');
-  }
-
-  // Set username (fetched from localStorage or static fallback)
-  window.onload = () => {
-    const user = JSON.parse(localStorage.getItem("smartQueryUser")) || { name: "Guest" };
-    document.getElementById("username").innerText = user.name || "Guest";
-  };
-
-  // Logout and redirect to login page
-  function logout() {
-    localStorage.removeItem("smartQueryUser");
-    window.location.href = "login.html"; // make sure this file exists
-  }
-
-  // Optional: Close dropdown when clicking outside
-  document.addEventListener("click", function(event) {
-    const dropdown = document.getElementById("profile-dropdown");
-    const profileIcon = event.target.closest("img");
-    if (!dropdown.contains(event.target) && !profileIcon) {
-      dropdown.classList.add("hidden");
+    function toggleDropdown() {
+      document.getElementById('profile-dropdown').classList.toggle('hidden');
     }
-  });
+
+    window.onload = () => {
+      const user = JSON.parse(localStorage.getItem("smartQueryUser")) || { name: "Guest" };
+      document.getElementById("username").innerText = user.name || "Guest";
+    };
+
+    function logout() {
+      localStorage.removeItem("smartQueryUser");
+      window.location.href = "login.html";
+    }
+
+    document.addEventListener("click", function (event) {
+      const dropdown = document.getElementById("profile-dropdown");
+      const profileIcon = event.target.closest("img");
+      if (!dropdown.contains(event.target) && !profileIcon) {
+        dropdown.classList.add("hidden");
+      }
+    });
   </script>
 </head>
 <body class="bg-gray-50 text-gray-800 font-inter">
 
-  <!-- Navbar -->
+  <!-- 🌐 Navbar -->
   <nav class="bg-white shadow sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
       <h1 class="text-2xl font-bold text-blue-600">SmartQuery<span class="text-gray-800"> AI</span></h1>
 
-      <!-- Desktop Links -->
+      <!-- Desktop Nav -->
       <div class="hidden md:flex items-center gap-8">
-        <a href="index.html" class="text-gray-700 hover:text-blue-600 font-medium flex items-center gap-1">
-           Home
-        </a>
-        <a href="submit-query.html" class="text-gray-700 hover:text-blue-600 font-medium flex items-center gap-1">
-          Submit Query
-        </a>
-        <!--<a href="upload-documents.html" class="text-gray-700 hover:text-blue-600 font-medium flex items-center gap-1">
-         Upload Documents
-        </a>-->
+        <a href="index.html" class="text-gray-700 hover:text-blue-600 font-medium">Home</a>
+        <a href="submit-query.html" class="text-gray-700 hover:text-blue-600 font-medium">Submit Query</a>
+        <a href="#about" class="text-gray-700 hover:text-blue-600 font-medium">About Us</a>
 
         <!-- Profile Dropdown -->
-<div class="relative group">
-  <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" 
-       alt="Profile"
-       class="w-9 h-9 rounded-full cursor-pointer ring-1 ring-blue-400"
-       onclick="toggleDropdown()" />
-  <div id="profile-dropdown" class="absolute right-0 mt-2 w-52 bg-white border rounded shadow-md hidden z-20">
-    <div class="px-4 py-2 border-b text-sm text-gray-700 font-medium">
-       <span id="username">User Name</span>
-    </div>
-    <a href="view-history.html" class="block px-4 py-2 hover:bg-gray-100 text-sm">View History</a>
-    <button onclick="logout()" class="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm text-red-600">Logout</button>
-  </div>
-</div>
+        <div class="relative">
+          <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" 
+               class="w-9 h-9 rounded-full cursor-pointer ring-1 ring-blue-400"
+               onclick="toggleDropdown()" />
+          <div id="profile-dropdown" class="absolute right-0 mt-2 w-52 bg-white border rounded shadow-md hidden z-20">
+            <div class="px-4 py-2 border-b text-sm text-gray-700 font-medium">
+              <span id="username">User</span>
+            </div>
+            <a href="view-history.html" class="block px-4 py-2 hover:bg-gray-100 text-sm">View History</a>
+            <button onclick="logout()" class="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm text-red-600">Logout</button>
+          </div>
+        </div>
+      </div>
 
       <!-- Mobile Menu Button -->
       <div class="md:hidden">
@@ -81,23 +70,23 @@
       </div>
     </div>
 
-    <!-- Mobile Menu -->
+    <!-- 📱 Mobile Nav -->
     <div id="mobile-menu" class="md:hidden hidden px-4 pb-4 space-y-2">
       <a href="index.html" class="block py-2 flex items-center gap-2"><i data-lucide="home" class="w-5 h-5"></i> Home</a>
       <a href="submit-query.html" class="block py-2 flex items-center gap-2"><i data-lucide="edit" class="w-5 h-5"></i> Submit Query</a>
-      <a href="upload-documents.html" class="block py-2 flex items-center gap-2"><i data-lucide="upload" class="w-5 h-5"></i> Upload Documents</a>
+      <a href="#about" class="block py-2 flex items-center gap-2"><i data-lucide="info" class="w-5 h-5"></i> About Us</a>
       <a href="view-history.html" class="block py-2 flex items-center gap-2"><i data-lucide="history" class="w-5 h-5"></i> View History</a>
-      <a href="#" class="block py-2 flex items-center gap-2"><i data-lucide="log-out" class="w-5 h-5"></i> Logout</a>
+      <a href="#" onclick="logout()" class="block py-2 flex items-center gap-2 text-red-600"><i data-lucide="log-out" class="w-5 h-5"></i> Logout</a>
     </div>
   </nav>
 
-  <!-- Hero Section -->
+  <!-- 🚀 Hero Section -->
   <section class="bg-blue-50 py-20">
     <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center">
       <div class="md:w-1/2 mb-10 md:mb-0">
         <h2 class="text-4xl md:text-5xl font-bold text-blue-700 leading-tight mb-4">AI-Powered Insurance Query Assistant</h2>
         <p class="text-lg text-gray-700 mb-6">
-          Upload your documents, ask your questions, and let SmartQuery handle the rest with instant intelligent answers.
+          Upload your insurance policy, ask questions, and get smart instant responses tailored just for you.
         </p>
         <a href="submit-query.html" class="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition">Get Started</a>
       </div>
@@ -107,38 +96,67 @@
     </div>
   </section>
 
-  <!-- Quick Actions -->
-  <section class="py-16 bg-white">
-    <div class="max-w-6xl mx-auto px-4 text-center">
-      <h3 class="text-3xl font-bold mb-10 text-gray-800">Quick Actions</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        <a href="submit-query.html" class="bg-white border hover:border-blue-600 hover:shadow-lg transition p-6 rounded-xl text-center">
-          <div class="text-4xl mb-3 text-blue-600"><i data-lucide="edit" class="w-8 h-8 mx-auto"></i></div>
-          <h4 class="text-lg font-semibold">Submit New Query</h4>
-          <p class="text-sm text-gray-500">Ask any insurance-related questions</p>
-        </a>
-        <!--<a href="upload-documents.html" class="bg-white border hover:border-green-600 hover:shadow-lg transition p-6 rounded-xl text-center">
-          <div class="text-4xl mb-3 text-green-600"><i data-lucide="upload" class="w-8 h-8 mx-auto"></i></div>
-          <h4 class="text-lg font-semibold">Upload Documents</h4>
-          <p class="text-sm text-gray-500">Attach your insurance files for better accuracy</p>
-        </a>-->
-        <a href="view-history.html" class="bg-white border hover:border-yellow-500 hover:shadow-lg transition p-6 rounded-xl text-center">
-          <div class="text-4xl mb-3 text-yellow-600"><i data-lucide="history" class="w-8 h-8 mx-auto"></i></div>
-          <h4 class="text-lg font-semibold">View Past History</h4>
-          <p class="text-sm text-gray-500">See previously asked queries and answers</p>
-        </a>
-      </div>
+  <!-- ⚡ Quick Actions -->
+<section class="py-16 bg-white">
+  <div class="max-w-6xl mx-auto px-4 text-center">
+    <h3 class="text-3xl font-bold mb-10 text-gray-800">Quick Actions</h3>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      
+      <!-- Submit Query -->
+      <a href="submit-query.html" class="group bg-white border rounded-xl p-6 hover:shadow-xl hover:border-blue-600 transition-all duration-300">
+        <div class="flex flex-col items-center">
+          <div class="bg-blue-100 text-blue-600 rounded-full p-4 mb-4 group-hover:bg-blue-200">
+            <i data-lucide="edit" class="w-6 h-6"></i>
+          </div>
+          <h4 class="text-lg font-semibold mb-1">Submit New Query</h4>
+          <p class="text-sm text-gray-500">Ask insurance-related questions with optional policy uploads</p>
+        </div>
+      </a>
+
+      <!-- View History -->
+      <a href="view-history.html" class="group bg-white border rounded-xl p-6 hover:shadow-xl hover:border-yellow-500 transition-all duration-300">
+        <div class="flex flex-col items-center">
+          <div class="bg-yellow-100 text-yellow-600 rounded-full p-4 mb-4 group-hover:bg-yellow-200">
+            <i data-lucide="history" class="w-6 h-6"></i>
+          </div>
+          <h4 class="text-lg font-semibold mb-1">View Past History</h4>
+          <p class="text-sm text-gray-500">Check your previously submitted queries and results</p>
+        </div>
+      </a>
+
+      <!-- About Us Scroll (Optional) -->
+      <a href="#about" class="group bg-white border rounded-xl p-6 hover:shadow-xl hover:border-green-500 transition-all duration-300">
+        <div class="flex flex-col items-center">
+          <div class="bg-green-100 text-green-600 rounded-full p-4 mb-4 group-hover:bg-green-200">
+            <i data-lucide="info" class="w-6 h-6"></i>
+          </div>
+          <h4 class="text-lg font-semibold mb-1">About SmartQuery</h4>
+          <p class="text-sm text-gray-500">Learn how SmartQuery AI simplifies policy interpretation</p>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+
+  <!-- 📖 About Section -->
+  <section id="about" class="bg-gray-100 py-16">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <h3 class="text-3xl font-bold text-gray-800 mb-6">About SmartQuery AI</h3>
+      <p class="text-lg text-gray-600 leading-relaxed">
+        SmartQuery AI is your intelligent assistant for navigating insurance policies. Our platform combines the power of AI and natural language understanding to help you understand your policy, file claims, and get instant responses to your insurance-related queries — all in a simple and secure way.
+      </p>
     </div>
   </section>
 
-  <!-- Footer -->
+  <!-- 🦶 Footer -->
   <footer class="bg-gray-100 text-center text-sm text-gray-500 py-6">
     © 2025 <span class="text-blue-600 font-medium">SmartQuery AI</span>. All rights reserved.
   </footer>
 
-  <script>
-    lucide.createIcons();
-  </script>
+  <script>lucide.createIcons();</script>
 
 </body>
 </html>

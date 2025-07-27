@@ -3,72 +3,112 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login | SmartQuery AI</title>
+  <title>SmartQuery AI | Login & Signup</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="icon" type="image/png" href="logo.png" />
 </head>
 <body class="bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center min-h-screen font-sans">
 
-  <div class="bg-white shadow-xl rounded-2xl px-10 py-8 w-full max-w-md border border-blue-100">
-    
-    
+  <div class="bg-white shadow-xl rounded-2xl px-10 py-8 w-full max-w-md border border-blue-100" id="auth-box">
+    <h2 id="form-title" class="text-3xl font-bold text-center text-blue-600 mb-2">Welcome Back</h2>
+    <p id="form-subtitle" class="text-center text-gray-500 text-sm mb-6">Sign in to your SmartQuery AI account</p>
 
-    <h2 class="text-3xl font-bold text-center text-blue-600 mb-2">Welcome Back</h2>
-    <p class="text-center text-gray-500 text-sm mb-6">Sign in to your SmartQuery AI account</p>
-
+    <!-- Login Form -->
     <form id="loginForm" class="space-y-4">
+
+      <div id="nameField" class="hidden">
+        <label for="name" class="block text-gray-700 mb-1 text-sm font-medium">Full Name</label>
+        <input type="text" id="name"
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Komal Shinde" />
+      </div>
+      
       <div>
         <label for="email" class="block text-gray-700 mb-1 text-sm font-medium">Email</label>
         <input type="email" id="email" required
-          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="you@example.com" />
       </div>
 
       <div>
         <label for="password" class="block text-gray-700 mb-1 text-sm font-medium">Password</label>
         <input type="password" id="password" required
-          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="••••••••" />
       </div>
 
+      <!-- Extra field for signup -->
+      
+
       <button type="submit"
-        class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg transition duration-200 font-semibold shadow-sm">
+        class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg transition duration-200 font-semibold shadow-sm"
+        id="submitButton">
         Sign In
       </button>
 
       <p id="loginError" class="text-red-500 text-sm hidden text-center mt-2"></p>
     </form>
 
+    <!-- Switch Between Forms -->
     <div class="text-center mt-6 text-sm text-gray-600">
-      Don't have an account?
-      <a href="signup.html" class="text-blue-500 hover:underline font-medium">Create one</a>
+      <span id="toggleText">Don't have an account?</span>
+      <button id="toggleBtn" class="text-blue-500 hover:underline font-medium">Create one</button>
     </div>
   </div>
 
   <script>
-    document.getElementById("loginForm").addEventListener("submit", async function (e) {
+    const form = document.getElementById("loginForm");
+    const toggleBtn = document.getElementById("toggleBtn");
+    const toggleText = document.getElementById("toggleText");
+    const formTitle = document.getElementById("form-title");
+    const formSubtitle = document.getElementById("form-subtitle");
+    const submitButton = document.getElementById("submitButton");
+    const nameField = document.getElementById("nameField");
+    const errorBox = document.getElementById("loginError");
+
+    let isLogin = true;
+
+    toggleBtn.addEventListener("click", () => {
+      isLogin = !isLogin;
+
+      formTitle.textContent = isLogin ? "Welcome Back" : "Create Account";
+      formSubtitle.textContent = isLogin
+        ? "Sign in to your SmartQuery AI account"
+        : "Sign up and get started with SmartQuery AI";
+      toggleText.textContent = isLogin
+        ? "Don't have an account?"
+        : "Already have an account?";
+      toggleBtn.textContent = isLogin ? "Create one" : "Sign in";
+      submitButton.textContent = isLogin ? "Sign In" : "Sign Up";
+      nameField.classList.toggle("hidden");
+      errorBox.classList.add("hidden");
+    });
+
+    form.addEventListener("submit", async function (e) {
       e.preventDefault();
+      errorBox.classList.add("hidden");
 
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value.trim();
-      const errorBox = document.getElementById("loginError");
+      const name = document.getElementById("name")?.value.trim();
+
+      const endpoint = isLogin ? "/login" : "/signup";
+      const payload = isLogin ? { email, password } : { name, email, password };
 
       try {
-        const response = await fetch("http://localhost:5000/login", {
+        const response = await fetch(`http://localhost:5000${endpoint}`, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ email, password })
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
         });
 
         const result = await response.json();
 
         if (response.ok) {
-          localStorage.setItem("smartQueryUser", JSON.stringify(result.user));
+          localStorage.setItem("smartQueryUser", JSON.stringify(result.user || { name, email }));
           window.location.href = "index.html";
         } else {
-          errorBox.textContent = result.message || "Login failed";
+          errorBox.textContent = result.message || "Something went wrong";
           errorBox.classList.remove("hidden");
         }
       } catch (err) {
