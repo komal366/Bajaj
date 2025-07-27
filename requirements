@@ -1,0 +1,16 @@
+# ==== Web Framework ====
+Flask==2.3.2
+Flask-Cors==3.0.10
+
+# ==== Database ====
+pymongo==4.6.1
+
+# ==== Authentication & Security ====
+Werkzeug==2.3.6
+
+# ==== Machine Learning & NLP ====
+torch==2.1.2
+sentence-transformers==2.2.2
+
+# ==== PDF Processing ====
+PyMuPDF==1.23.3  # Also known as fitz
